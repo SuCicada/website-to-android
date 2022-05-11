@@ -1,0 +1,8 @@
+local.properties
+*.iml
+.gradle
+.idea
+build
+app/src/main/AndroidManifest.xml
+/app/src/main/assets/config.properties
+/config.properties

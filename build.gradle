@@ -2,7 +2,8 @@
 
 buildscript {
     repositories {
-        jcenter()
+//        jcenter()
+        mavenCentral()
         maven {
             url 'https://maven.google.com/'
             name 'Google'
@@ -44,7 +45,10 @@ ext {
 
 allprojects {
     repositories {
+        mavenCentral()
         google()
-        jcenter()
+//        jcenter()
     }
 }
+
+apply from: 'generator.gradle'

@@ -2,7 +2,9 @@ package com.sherdle.webtoapp;
 
 import android.content.Intent;
 import android.net.Uri;
+
 import androidx.multidex.MultiDexApplication;
+
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -18,10 +20,13 @@ import org.json.JSONObject;
 
 public class App extends MultiDexApplication {
 
-      private String push_url = null;
+    private String push_url = null;
     private FirebaseAnalytics mFirebaseAnalytics;
 
-    @Override public void onCreate() {
+    @Override
+    public void onCreate() {
+        Config.init(getApplicationContext());
+
         super.onCreate();
 
         if (Config.ANALYTICS_ID.length() > 0) {
@@ -68,13 +73,13 @@ public class App extends MultiDexApplication {
 
     }
 
-    public synchronized String getPushUrl(){
+    public synchronized String getPushUrl() {
         String url = push_url;
         push_url = null;
         return url;
     }
 
-    public synchronized void setPushUrl(String url){
+    public synchronized void setPushUrl(String url) {
         this.push_url = url;
     }
 } 

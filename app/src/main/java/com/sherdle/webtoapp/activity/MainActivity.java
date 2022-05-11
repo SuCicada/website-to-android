@@ -90,6 +90,8 @@ public class MainActivity extends AppCompatActivity implements MenuItemCallback{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Config.init(getApplicationContext());
+
         super.onCreate(savedInstanceState);
         ThemeUtils.setTheme(this);
 

@@ -1,15 +1,39 @@
 package com.sherdle.webtoapp;
 
+import android.content.Context;
+
+import com.google.android.gms.common.util.ArrayUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Properties;
+
 public class Config {
+    static Properties config;
+
+    public static void init(Context content) {
+        try {
+            if (config == null) {
+                InputStream inputStream = content.getAssets().open("config.properties");
+                config = new Properties();
+                config.load(inputStream);
+
+                URLS[0] = config.getProperty("APP_URL");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * MAIN SETTINGS
      */
 
     //Set to true to use a drawer, or to false to use tabs (or neither)
-    public static boolean USE_DRAWER = true;
+    public static boolean USE_DRAWER = false;
     //Set to true if you would like to hide the actionbar at all times
-    public static boolean HIDE_ACTIONBAR = false;
+    public static boolean HIDE_ACTIONBAR = true;
 
     //Set to true if you would like to display a splash screen on boot. Drawable shown is 'vert_loading'
     public static boolean SPLASH = true;
@@ -30,7 +54,7 @@ public class Config {
     //The titles of your web items
     public static final Object[] TITLES = new String[]{"Google"};
     //The URL's of your web items
-    public static final String[] URLS = new String[]{"http://google.com"};
+    public static final String[] URLS = new String[]{"http://404"};
     //The icons of your web items
     public static final int[] ICONS = new int[]{0};
 
@@ -53,11 +77,11 @@ public class Config {
     public static final String[] OPEN_ALL_OUTSIDE_EXCEPT = new String[]{};
 
     //Set to true if you would like to hide the drawer header. (requires USE_DRAWER)
-    public static boolean HIDE_DRAWER_HEADER =false;
+    public static boolean HIDE_DRAWER_HEADER = true;
     //Set to true if you would like to hide navigation in the toolbar (i.e. back, forward)
-    public static boolean HIDE_MENU_NAVIGATION = false;
+    public static boolean HIDE_MENU_NAVIGATION = true;
     //Set to true if you would like to sharing in the toolbar
-    public static boolean HIDE_MENU_SHARE = false;
+    public static boolean HIDE_MENU_SHARE = true;
     //Set to true if you would like to hide the home button
     public static boolean HIDE_MENU_HOME = true;
     //Set to true if you would like to show a link to the apps notification settings
@@ -74,12 +98,12 @@ public class Config {
     //Load a webpage when no internet connection was found (must be in assets). Leave empty to show dialog.
     public static String NO_CONNECTION_PAGE = "";
     //The image/icon used for in the drawer header (use R.mipmap.ic_launcher to show centered app icon)
-    public static int DRAWER_ICON = R.drawable.vert_loading;
+    public static int DRAWER_ICON = R.mipmap.my_icon;
     //The image/icon used for the toolbar
     public static int TOOLBAR_ICON = 0;
 
     //Show interstitials when browsing web pages (or only during drawer/tab navigation)
-    public static final boolean INTERSTITIAL_PAGE_LOAD = true;
+    public static final boolean INTERSTITIAL_PAGE_LOAD = false;
     //The frequency in which interstitial ads are shown
     public static final int INTERSTITIAL_INTERVAL = 2;
 }

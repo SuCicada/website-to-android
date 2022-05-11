@@ -1,0 +1,59 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+import java.nio.file.Files
+
+def getConfig() {
+    def props = new Properties()
+    file("config.properties").withInputStream { props.load(it) }
+    return props
+}
+
+task generatorXML(type: Copy) {
+    def props = getConfig()
+    def APP_NAME = props.getProperty("APP_NAME")
+    println "build AndroidManifest "
+    println "APP_NAME $APP_NAME"
+
+    copy {
+        from 'app/src/main/AndroidManifest.example.xml'
+        into 'app/src/main/'
+        rename('AndroidManifest.example.xml', 'AndroidManifest.xml')
+        filter(ReplaceTokens, tokens: [
+                APP_NAME: APP_NAME,
+        ])
+        outputs.upToDateWhen { false }
+    }
+    copy {
+        from 'config.properties'
+        into 'app/src/main/assets/'
+        outputs.upToDateWhen { false }
+    }
+    println "generatorXML over"
+}
+
+task generatorIcon(dependsOn: generatorXML) {
+    def props = getConfig()
+    def APP_ICON = props.getProperty("APP_ICON")
+    def iconList = [
+            "app/src/main/res/mipmap-hdpi/my_icon.png",
+            "app/src/main/res/drawable-nodpi/vert_loading.png",
+    ]
+    println "APP_ICON: $APP_ICON  ->  $iconList"
+
+    def temp = Files.createTempFile("app_icon", ".tmp")
+    new URL(APP_ICON).withInputStream { i ->
+        temp.withOutputStream {
+            it << i
+        }
+    }
+
+    iconList.each { dest ->
+        def file = new File(dest)
+        copy {
+            from temp
+            into file.getParent()
+            rename(new File(temp.toString()).getName(), file.getName())
+            outputs.upToDateWhen { false }
+        }
+    }
+    println "generatorIcon over"
+}
